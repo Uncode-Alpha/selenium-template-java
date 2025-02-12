@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
  * @author ejunior
  *
  */
-public class PracticeProblems {
+public class DuplicatesScript {
 	private WebDriver driver;
 	
 	private String txtSearch = "//input[@name='q']";
