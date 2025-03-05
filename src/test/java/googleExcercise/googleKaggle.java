@@ -38,6 +38,7 @@ public class googleKaggle {
     }
     @BeforeMethod
     public void setup(){
+        // TODO: Download driver executable
         //Here we initialize the driver
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 10);    

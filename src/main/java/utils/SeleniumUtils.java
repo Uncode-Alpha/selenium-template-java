@@ -1,5 +1,6 @@
 package utils;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.function.Function;
 
@@ -16,7 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  */
 public class SeleniumUtils {
-	private static final int DEFAULT_WAIT_TIME = 10;
+	private static final Duration DEFAULT_WAIT_TIME = Duration.ofSeconds(10);
 	
 	/**
 	 * Try to find an element in the page by xpath. If the element is not found,
@@ -60,7 +61,7 @@ public class SeleniumUtils {
 	 * @param timeOutInSeconds
 	 * @return
 	 */
-	public static WebElement waitForElementToBeVisible(WebDriver driver, String xpath, int timeOutInSeconds) {
+	public static WebElement waitForElementToBeVisible(WebDriver driver, String xpath, Duration timeOutInSeconds) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
 		
 		try {
@@ -90,7 +91,7 @@ public class SeleniumUtils {
 	 * @param timeOutInSeconds
 	 * @return
 	 */
-	public static WebElement waitForElement(WebDriver driver, String xpath, int timeOutInSeconds) {
+	public static WebElement waitForElement(WebDriver driver, String xpath, Duration timeOutInSeconds) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
 		try {
 			return wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
@@ -119,7 +120,7 @@ public class SeleniumUtils {
 	 * @param timeOutInSeconds
 	 * @return
 	 */
-	public static List<WebElement> waitForElements(WebDriver driver, String xpath, int timeOutInSeconds) {
+	public static List<WebElement> waitForElements(WebDriver driver, String xpath, Duration timeOutInSeconds) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
 		try {
 			return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(xpath)));
@@ -145,11 +146,11 @@ public class SeleniumUtils {
 	 * 
 	 * @param driver
 	 * @param xpath
-	 * @param timeOutInSeconds
-	 * @return
-	 */
-	public static WebElement waitForElementToBeClickable(WebDriver driver, String xpath, int timeOutInSeconds) {
-		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+	 * @param defaultWaitTime
+		 * @return
+		 */
+		public static WebElement waitForElementToBeClickable(WebDriver driver, String xpath, Duration defaultWaitTime) {
+			WebDriverWait wait = new WebDriverWait(driver, defaultWaitTime);
 		try {
 			return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
 		} catch (Exception e) {
@@ -188,7 +189,7 @@ public class SeleniumUtils {
 	 * @param timeOutInSeconds
 	 * @return
 	 */
-	public <T> T waitUntil(WebDriver driver, Function<? super WebDriver, T> condition, int timeOutInSeconds) {
+	public <T> T waitUntil(WebDriver driver, Function<? super WebDriver, T> condition, Duration timeOutInSeconds) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
 		return wait.until(condition);
 	}
