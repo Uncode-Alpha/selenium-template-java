@@ -5,7 +5,8 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import java.io.File;
-import org.junit.Test;
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +16,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 //Declare static constants to be used, including paths for testData
 
@@ -41,7 +43,7 @@ public class googleKaggle {
         // TODO: Download driver executable
         //Here we initialize the driver
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 10);    
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));    
     }
     @Test
     public void googleSearchTest(){
