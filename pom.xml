@@ -8,13 +8,12 @@
 
     <properties>
         <selenium.version>4.10.0</selenium.version>
-        <webdrivermanager.version>5.4.0</webdrivermanager.version>
-        <testng.version>7.8.0</testng.version> <!-- Corrected TestNG version -->
+        <webdrivermanager.version>5.6.2</webdrivermanager.version>
+        <testng.version>7.0.0</testng.version> <!-- Corrected TestNG version -->
         <extentreports.version>5.0.9</extentreports.version>
         <guava.version>32.1.2-jre</guava.version>
         <slf4j.version>2.0.7</slf4j.version>
     </properties>
-
     <dependencies>
         <!-- WebDriverManager for managing browser drivers -->
         <dependency>
@@ -76,15 +75,15 @@
 
             <!-- Maven Surefire Plugin for TestNG -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
-            </plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.1.2</version>
+            <configuration>
+                <suiteXmlFiles>
+                    <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                </suiteXmlFiles>
+            </configuration>
+        </plugin>
         </plugins>
     </build>
 </project>

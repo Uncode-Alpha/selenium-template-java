@@ -1,5 +1,6 @@
 package googleExcercise;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,49 +22,59 @@ import java.util.stream.Collectors;
 public class SeleniumTest {
     private WebDriver driver;
     private WebDriverWait wait;
-    private static final String URL = "file:////Users/josueaguirre/Downloads/index.html";
-
+    private static final String URL = "file://Users/josueaguirre/Documents/GitHub/selenium-template-java/src/main/resources/site_1/index.html";
     @BeforeMethod
     public void setup() {
-        // Set the path to the ChromeDriver executable
-        System.setProperty("webdriver.chrome.driver", "/Users/josueaguirre/Documents/Programas/chromedriver-mac-arm64/chromedriver");
-
+        // Set up ChromeDriver using WebDriverManager
+        WebDriverManager.chromedriver().setup();
         // Initialize the driver
         driver = new ChromeDriver();
+        // Initialize WebDriverWait with a timeout of 10 seconds
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @Test
     public void testFlightSearch() {
+        // Step 1: Navigate to the URL
         driver.get(URL);
-        //Go to Fights page and validate page is displayed
+
+        // Step 2: Go to Flights page and validate the page is displayed
         driver.findElement(By.xpath("//*[contains(text(),'Flights')]")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("flight-from")));
         Assert.assertTrue(driver.findElement(By.id("flight-to")).isDisplayed(), "Flights page is not displayed");
 
-        //Populate flight from
+        // Step 3: Populate flight from
         Select fromDropdown = new Select(driver.findElement(By.id("flight-from")));
         fromDropdown.selectByVisibleText("CDMX");
-        //Populate flight to
+
+        // Step 4: Populate flight to
         Select toDropdown = new Select(driver.findElement(By.id("flight-to")));
         toDropdown.selectByVisibleText("La Habana");
-        //Set departing and returning dates
+
+        // Step 5: Set departing and returning dates
         LocalDate today = LocalDate.now();
         LocalDate departingDate = today.plusDays(1);
         LocalDate returningDate = today.plusDays(6);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yyyy"); //Set correct date format
-        //Populate departing and returning dates
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Corrected date format
+
+        // Step 6: Populate departing and returning dates
         driver.findElement(By.id("departing")).sendKeys(departingDate.format(formatter));
         driver.findElement(By.id("returning")).sendKeys(returningDate.format(formatter));
-        //Click on search button
+
+        // Step 7: Click on the search button
         driver.findElement(By.xpath("//button[@class='btn btn-primary button-ns']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("h1['Results']")));
-        //Click on sort dropdown and select Price ascending
+
+        // Step 8: Wait for results to load and validate the results header
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(text(),'Results')]")));
+
+        // Step 9: Click on the sort dropdown and select "Price ascending"
         Select sortDropdown = new Select(driver.findElement(By.id("sort")));
         sortDropdown.selectByVisibleText("Price ascending");
 
-        
+        // Step 10: Wait for the sorted results to load
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("results")));
+
+        // Step 11: Fetch prices and validate they are sorted in ascending order
         List<WebElement> priceElements = driver.findElements(By.className("price"));
         List<Double> prices = priceElements.stream()
                 .map(WebElement::getText)
@@ -77,6 +88,7 @@ public class SeleniumTest {
 
     @AfterMethod
     public void tearDown() {
+        // Close the browser after the test
         if (driver != null) {
             driver.quit();
         }
