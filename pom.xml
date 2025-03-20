@@ -14,6 +14,7 @@
         <guava.version>32.1.2-jre</guava.version>
         <slf4j.version>2.0.7</slf4j.version>
     </properties>
+
     <dependencies>
         <!-- WebDriverManager for managing browser drivers -->
         <dependency>
@@ -49,6 +50,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
 
         <!-- SLF4J for logging -->
