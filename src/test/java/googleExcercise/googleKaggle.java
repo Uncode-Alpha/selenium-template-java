@@ -87,7 +87,14 @@ public class googleKaggle {
         wait.until(ExpectedConditions.visibilityOf(modelingLink));
         modelingLink.click();
         System.out.println("----------- Clicked on modeling link ----------");
-        wait.until(ExpectedConditions.visibilityOf(SeleniumUtils.findElement(driver, modelSectionXpath)));
+        WebElement modelSection = SeleniumUtils.findElement(driver, modelSectionXpath);
+        if(modelSection == null){
+            System.out.println("Modeling section not found, trying again");
+            actions.moveToElement(SeleniumUtils.findElement(driver, conclusionXpath)).perform();
+            wait.until(ExpectedConditions.visibilityOf(modelingLink));
+            modelingLink.click();
+        }
+        wait.until(ExpectedConditions.visibilityOf(modelSection));
         SeleniumUtils.takeScreenshotUtil(driver,screenshotName);
     }
     @AfterMethod
