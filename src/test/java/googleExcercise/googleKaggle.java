@@ -12,10 +12,10 @@ import java.time.Duration;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
@@ -37,12 +37,12 @@ public class googleKaggle {
     public static final String URL_NASA = "https://api.nasa.gov";
     public static final String URL_KAGGLE = "https://www.kaggle.com";
     public static final String KAGGLE_SEARCH_BAR = "//*[@id=\":r5:\"]";
-
+    String loadingSymbol = "//*[@role='progressbar']";
     String modelingXpath = "//span[contains(text(),'Preparing to modeling')]";
-    String modelSectionXpath = "//*[@id='4.-Preparing-to-modeling-']";
+    String modelSectionXpath = "//h2[@id='4.-Preparing-to-modeling-']";
     String conclusionXpath = "//*[@aria-label='7. Conclusion , 10 of 10']";
     String keys = "Test Automation";
-    String first_result_xpath = "//*[@id=\"results\"]/ul//li[1]";
+    String first_result_xpath = "//*[@class='MuiList-root km-list css-1uzmcsd']//li[1]";
     String screenshotName = "KaggleFirstResult";
     public static final String FINAL_URL_TEXT= "heart-disease";
 
@@ -70,15 +70,15 @@ public class googleKaggle {
     }
     @Test
     public void googleSearchTest() throws InterruptedException{
-        boolean flag;
         SoftAssert softAssert = new SoftAssert();
         Actions actions = new Actions(driver);
         //Open Kaggle and send keys
         SeleniumUtils.openPageAndSendKeysByXpath(driver,URL_KAGGLE,KAGGLE_SEARCH_BAR,keys);
         //Select first result
+        SeleniumUtils.elementIsNotVisible(driver,driver.findElement(By.xpath(loadingSymbol)));
         WebElement firstResult = SeleniumUtils.waitForElementToBeVisible(driver, first_result_xpath);
         System.out.println("----------- Landed on results page ----------");
-        firstResult.click();
+        SeleniumUtils.clickElementWithJS(driver,firstResult);
         System.out.println("----------- Clicked on first result ----------");
         //Landed on result after clicking
         softAssert.assertTrue(SeleniumUtils.urlContainsText(driver, FINAL_URL_TEXT));
@@ -87,15 +87,9 @@ public class googleKaggle {
         wait.until(ExpectedConditions.visibilityOf(modelingLink));
         modelingLink.click();
         System.out.println("----------- Clicked on modeling link ----------");
-        WebElement modelSection = SeleniumUtils.findElement(driver, modelSectionXpath);
-        if(modelSection == null){
-            System.out.println("Modeling section not found, trying again");
-            actions.moveToElement(SeleniumUtils.findElement(driver, conclusionXpath)).perform();
-            wait.until(ExpectedConditions.visibilityOf(modelingLink));
-            modelingLink.click();
-        }
-        wait.until(ExpectedConditions.visibilityOf(modelSection));
+        actions.scrollToElement(driver.findElement(By.xpath(modelSectionXpath)));
         SeleniumUtils.takeScreenshotUtil(driver,screenshotName);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
     @AfterMethod
     public void tearDown(){

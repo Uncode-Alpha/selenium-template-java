@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -17,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class containing many static methods to help testing.
@@ -27,6 +30,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class SeleniumUtils {
 	private static final String RESULT_IMAGE = "/Users/josueaguirre/Documents/GitHub/selenium-template-java/output/screenshots/";
 	private static final Duration DEFAULT_WAIT_TIME = Duration.ofSeconds(25);
+	public static Logger logger = LoggerFactory.getLogger(SeleniumUtils.class);
+
 	
 	/**
 	 * Try to find an element in the page by xpath. If the element is not found,
@@ -272,5 +277,35 @@ public class SeleniumUtils {
 			System.out.println("Unexpected error in urlContainsText method: " +"\n"+ e.getLocalizedMessage());
 		}
 		return flag;
+	}
+
+	public static void clickElementWithJS(WebDriver driver, WebElement element){
+		if(driver == null || element == null){
+			logger.error("Driver or element are null inside clickElementWithJS");
+			throw new IllegalArgumentException("Parameters cannot be null inside click Element with JS");
+		}
+		try{
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			logger.info("---------- making click on element: "+element);
+			js.executeScript("arguments[0].click();", element);
+		}catch(Exception e){
+			logger.error("Failed while trying making click on element: "+element);
+			logger.error("This is the error: "+e.getMessage());
+		}
+	}
+
+	public static void elementIsNotVisible(WebDriver driver, WebElement element){
+		if(driver == null|| element == null){
+			logger.error("Driver or element cannot be null inside ElementIsNotVisible method");
+			throw new IllegalArgumentException("Driver or element is null in elementIsNotVisible method");
+		}
+		try{
+			WebDriverWait wait = new WebDriverWait(driver, DEFAULT_WAIT_TIME);
+			logger.info("---------- waiting for element to be invisible: "+element);
+			wait.until(ExpectedConditions.invisibilityOf(element));
+		}catch(Exception e){
+			logger.error("Element is still visible after waiting for:"+DEFAULT_WAIT_TIME+" seconds");
+			logger.error("This is the error: "+e.getMessage());
+		}
 	}
 }
