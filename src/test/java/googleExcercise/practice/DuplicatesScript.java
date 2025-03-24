@@ -1,4 +1,4 @@
-package practice;
+package googleExcercise.practice;
 
 import org.openqa.selenium.WebDriver;
 
