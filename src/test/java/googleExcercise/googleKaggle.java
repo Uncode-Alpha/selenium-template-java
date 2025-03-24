@@ -71,8 +71,10 @@ public class GoogleKaggle {
     public void googleSearchTest() throws InterruptedException{
         SoftAssert softAssert = new SoftAssert();
         Actions actions = new Actions(driver);
+        driver.get(URL_KAGGLE);
+        driver.manage().window().maximize();
         //Open Kaggle and send keys
-        SeleniumUtils.openPageAndSendKeysByXpath(driver,URL_KAGGLE,KAGGLE_SEARCH_BAR,keys);
+        SeleniumUtils.openPageAndSendKeysByXpath(driver,KAGGLE_SEARCH_BAR,keys);
         //Select first result
         SeleniumUtils.elementIsNotVisible(driver,driver.findElement(By.xpath(loadingSymbol)));
         WebElement firstResult = SeleniumUtils.waitForElementToBeVisible(driver, first_result_xpath);

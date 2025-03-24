@@ -1,28 +1,27 @@
-package pages;
+package pages.nasa;
 
 //Imports
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import utils.CommonUtils;
-import utils.SeleniumUtils;
-import java.io.File;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
 import java.time.Duration;
-import javax.print.attribute.standard.MediaSize.NA;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import utils.SeleniumUtils;
 
 
 //Declare static constants to be used, including paths for testData
@@ -30,22 +29,28 @@ import org.testng.asserts.SoftAssert;
 public class NasaTest {
     public static WebDriver driver;
     public static WebDriverWait wait;
+    public ExtentSparkReporter sparkReporter;
+    public ExtentReports extent;
     public ExtentTest logger;
 
     //TODO: create and move to ENUM
-    public static final String URL_GOOGLE = "https://www.google.com";
-    public static final String URL_NASA = "https://api.nasa.gov";
-    //Endpoints
-    public static final String APOD_BASE = "https://api.nasa.gov/planetary/apod";
-    public static final String APOD_ENDPOINT = "https://api.nasa.gov/";
-    public static final String APOD_PARAM_API_KEY = "api_key";
-    public static final String APOD_PARAM_API_KEY_VALUE = "DEMO_KEY";
-
+    public static final String URL_NASA = "https://www.nasa.gov";
+    //Xpaths
+    public static final String NASA_SEARCH = "//*[@id=\"search-field-en-small--desktop\"]";
+    public static final String RESULT_PAGE_HEADING = "//*[contains(text(),'Search Results for:')]";
+/*
     @BeforeTest
     public void beforeTestMethod(){
-        CommonUtils.sparkReports();
+        sparkReporter = new ExtentSparkReporter(System.getProperty("user.dir") + File.separator + "reports" + File.separator + "ExtentReport.html");
+        extent = new ExtentReports();
+        extent.attachReporter(sparkReporter);
+        sparkReporter.config().setTheme(Theme.DARK);
+        extent.setSystemInfo("HostName", "RHEL8");
+        extent.setSystemInfo("UserName", "root");
+        sparkReporter.config().setDocumentTitle("Automation Report");
+        sparkReporter.config().setReportName("Automation Test Results");
     }
-
+*/
     @BeforeMethod
     public void setup(){
         // Driver Manager
@@ -64,28 +69,14 @@ public class NasaTest {
         //Example of implicit wait
         //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get(URL_NASA);
+        driver.manage().window().maximize();
+        SeleniumUtils.openPageAndSendKeysByXpath(driver,NASA_SEARCH,"Mars");
+        WebElement resultPage = SeleniumUtils.waitForElementToBeVisible(driver,RESULT_PAGE_HEADING);
+        Assert.assertTrue(resultPage.isDisplayed());
     }
 
-    @Test
-    public void restfulTest(){
-        //Using GET response
-        /*
-        Response response = RestAssured
-        .given()
-        .baseUri(APOD_BASE)
-        .queryParam(APOD_PARAM_API_KEY, APOD_PARAM_API_KEY_VALUE)
-        .when()
-        .get(APOD_ENDPOINT);
-        */
-    }
     @AfterMethod
     public void tearDown(){
         driver.quit();
-    }
-    
-    @AfterTest
-    public void afterTest(){
-        //The after test method works for flushing and closing any driver or 
-        extent.flush();
     }
 }

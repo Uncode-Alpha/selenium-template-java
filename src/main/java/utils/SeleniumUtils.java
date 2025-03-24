@@ -216,13 +216,11 @@ public class SeleniumUtils {
 	 * @param xpath
 	 * @param keys
 	 */
-	public static void openPageAndSendKeysByXpath(WebDriver driver, String url, String xpath, String keys){
-		if(driver == null||url == null||url.isEmpty()||xpath == null||xpath.isEmpty()||keys == null||keys.isEmpty()){
+	public static void openPageAndSendKeysByXpath(WebDriver driver, String xpath, String keys){
+		if(driver == null||xpath == null||xpath.isEmpty()||keys == null||keys.isEmpty()){
 			throw new IllegalArgumentException("Parameters are null or empty in openPageAndSendKeys method");
 		}
 		try{
-			driver.get(url);
-			driver.manage().window().maximize();
 			WebElement searchBox = waitForElementToBeVisible(driver, xpath);
 			searchBox.sendKeys(keys);
 			searchBox.sendKeys(Keys.ENTER);

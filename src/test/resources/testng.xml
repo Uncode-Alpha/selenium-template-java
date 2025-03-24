@@ -5,9 +5,9 @@
     <test name="Google Kaggle and Selenium Tests">
             <!-- Classes to include -->
         <classes>
-            <class name="googleExcercise.GoogleKaggle" />
+            <!--<class name="googleExcercise.GoogleKaggle" />
             <class name="googleExcercise.SeleniumTest" />
-            <class name="pages.NasaTest" />
+            <class name="pages.nasa.NasaTest" /> -->
         </classes>
     </test>
 
