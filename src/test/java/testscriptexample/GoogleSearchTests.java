@@ -1,4 +1,4 @@
-package tests;
+package testscriptexample;
 
 import static org.testng.Assert.assertTrue;
 

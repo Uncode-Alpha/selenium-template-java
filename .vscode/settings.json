@@ -1,0 +1,9 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.project.referencedLibraries": [
+            "lib/**/*.jar",
+            "c:\\Users\\josueaguirre\\Documents\\Code\\jars\\testng-7.8.0.jar",
+            "c:\\Users\\josueaguirre\\Documents\\Code\\jars\\testng-7.4.0.jar"
+        ]
+}
