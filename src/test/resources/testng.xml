@@ -3,9 +3,11 @@
 
     <!-- Test 1: Google Kaggle and Selenium Tests -->
     <test name="Google Kaggle and Selenium Tests">
-        <!-- Classes to include -->
+            <!-- Classes to include -->
         <classes>
-            <class name="googleExcercise.googleKaggle" />
+            <class name="googleExcercise.GoogleKaggle" />
+            <class name="googleExcercise.SeleniumTest" />
+            <class name="pages.NasaTest" />
         </classes>
     </test>
 

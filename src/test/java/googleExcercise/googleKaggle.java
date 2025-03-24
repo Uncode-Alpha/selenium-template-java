@@ -24,7 +24,7 @@ import org.testng.asserts.SoftAssert;
 
 //Declare static constants to be used, including paths for testData
 
-public class googleKaggle {
+public class GoogleKaggle {
     public static WebDriver driver;
     public static WebDriverWait wait;
     public ExtentSparkReporter sparkReporter;
