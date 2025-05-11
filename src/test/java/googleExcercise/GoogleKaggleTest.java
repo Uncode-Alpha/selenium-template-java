@@ -2,7 +2,6 @@ package googleExcercise;
 
 //Imports
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -24,12 +23,11 @@ import org.testng.asserts.SoftAssert;
 
 //Declare static constants to be used, including paths for testData
 
-public class GoogleKaggle {
+public class GoogleKaggleTest {
     public static WebDriver driver;
     public static WebDriverWait wait;
     public ExtentSparkReporter sparkReporter;
     public ExtentReports extent;
-    public ExtentTest logger;
 
     //TODO: create and move to ENUM
     public static final String URL_GOOGLE = "https://www.google.com";
