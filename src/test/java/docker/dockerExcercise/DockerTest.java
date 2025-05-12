@@ -1,5 +1,6 @@
 package docker.dockerExcercise;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -20,7 +21,6 @@ public class DockerTest{
     public static Logger logger = LoggerFactory.getLogger(SeleniumUtils.class);
     private static final String LOCALHOST = "http://localhost:4444/wd/hub";
     private static final String URL="https://api.nasa.gov";
-
     private static final String TITLE_MESSAGE ="Page title is : {}";
 
     @BeforeTest
@@ -31,35 +31,35 @@ public class DockerTest{
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         try{
             URL url = new URL(LOCALHOST);
-            chromeDriver = new RemoteWebDriver(url,chromeOptions);
-            edgeDriver = new RemoteWebDriver(url, edgeOptions);
-            firefoxDriver = new RemoteWebDriver(url, firefoxOptions);
+            chromeDriver = createNewDriver(url,chromeOptions);
+            edgeDriver = createNewDriver(url, edgeOptions);
+            firefoxDriver = createNewDriver(url, firefoxOptions);
         }catch(MalformedURLException e){
         logger.error("Malformed URL passed as LocalHost: {}", e.getMessage());
         }
     }
+    private RemoteWebDriver createNewDriver(URL url, Object options){
+        return new RemoteWebDriver(url, (Capabilities) options);
+    }
+    private void testGridDriver(RemoteWebDriver gridDriver){
+        gridDriver.get(URL);
+        String title = gridDriver.getTitle();
+        logger.info(TITLE_MESSAGE,title);
+        gridDriver.quit();
+    }
 
     @Test
     public void testDockerGridChrome(){
-        chromeDriver.get(URL);
-        String title = chromeDriver.getTitle();
-        logger.info(TITLE_MESSAGE,title);
-        chromeDriver.quit();
+        testGridDriver(chromeDriver);
     }
 
     @Test
     public void testDockerGridEdge(){
-        edgeDriver.get(URL);
-        String title = edgeDriver.getTitle();
-        logger.info(TITLE_MESSAGE,title);
-        edgeDriver.quit();
+        testGridDriver(edgeDriver);
     }
 
     @Test
     public void testDockerGridFirefox(){
-        firefoxDriver.get(URL);
-        String title = firefoxDriver.getTitle();
-        logger.info(TITLE_MESSAGE,title);
-        firefoxDriver.quit();
+        testGridDriver(firefoxDriver);
     }
 }
