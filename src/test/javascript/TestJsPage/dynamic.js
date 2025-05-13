@@ -1,3 +1,6 @@
+document.write("<h2> This is a heading made inside a script </h2>");
+console.log("This is a console message, made inside a script");
+
 document.getElementById("testButton").addEventListener("click", displayText);
 
 function displayText() {
